@@ -43,7 +43,9 @@
 
 #define FLOCK(fd, cmd) { \
     struct flock lock = {.l_type=cmd,.l_start=0,.l_whence=SEEK_SET,.l_len=0}; \
-    fcntl(fd, F_SETLKW, &lock); \
+    if (fcntl(fd, F_SETLKW, &lock) == -1) { \
+        PRINT_DEBUG("FAILED TO GET LOCK"); \
+    } \
 }
 
 #ifdef DEBUG
